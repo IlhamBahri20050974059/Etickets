@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Etickets.Models.MovieProducer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int totalPages = (int)Math.Ceiling((decimal)Model.Count() / 10);
+    int currentPage = ViewBag.PageNumber ?? 1;
+    string searchString = ViewBag.SearchString ?? "";
+
+}
+
+
+<h2>Movie Producer</h2>
+
+<button class="button-create" onclick="location.href='MovieProducers/Create'">Create</button>
+<table class="table"  border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            Movie
+        </th>
+        <th>
+            Producer
+        </th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+           @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.movie.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Producer.FullName)
+        </td>
+        <td>
+            <button class="button-edit" onclick="location.href='MovieProducers/Edit?id=@item.Id'">Edit</button>
+            <button class="button-details" onclick="location.href='MovieProducers/Details?id=@item.Id'">Details</button>
+            <button class="button-delete" onclick="location.href='MovieProducers/Delete?id=@item.Id'">Delete</button>
+        </td>
+    </tr>
+}
+
+</table>
+<div class="pagination-container">
+    <div class="pagination">
+        <ul>
+            <li class="previous @(currentPage == 1 ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage - 1, searchString = searchString })">Prev</a></li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="@(i == currentPage ? "active" : "")"><a href="@Url.Action("Index", new { pageNumber = i, searchString = searchString })">@i</a></li>
+            }
+            <li class="next @(currentPage == totalPages ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage + 1, searchString = searchString })">Next</a></li>
+        </ul>
+    </div>
+    <div class="pagination-info">
+        <p>Total Items: @Model.Count()</p>
+        <form method="get" action="@Url.Action("Index")">
+            <input type="hidden" name="searchString" value="@searchString" />
+            <input type="number" name="pageNumber" min="1" max="@totalPages" value="@currentPage" />
+            <input type="submit" value="Go" />
+        </form>
+    </div>
+</div>

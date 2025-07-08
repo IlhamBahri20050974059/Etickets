@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Etickets.Models.Cinema>
+
+@{
+    ViewBag.Title = "Cinema";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int totalPages = (int)Math.Ceiling((decimal)Model.Count() / 10);
+    int currentPage = ViewBag.PageNumber ?? 1;
+    string searchString = ViewBag.SearchString ?? "";
+}
+<p>
+    <button class="button-report" onclick="location.href = 'Cinemas/Report'">Report</button>
+    <button class="button-create" onclick="location.href='Cinemas/Create'">Create</button>
+</p>
+
+    @using (Html.BeginForm("Index", "Cinemas", FormMethod.Post))
+    {
+        <div class="form-group">
+            <input type="text" name="searchString" class="form-control search-input" placeholder="Search...">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    }
+    <table class="table" border="1">
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Logo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    <img src="@Url.Content(item.Logo??"/")" width="50" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <button class="button-edit" onclick="location.href='Cinemas/Edit?id=@item.Id'">Edit</button>
+                    <button class="button-details" onclick="location.href='Cinemas/Details?id=@item.Id'">Details</button>
+                    <button class="button-delete" onclick="location.href='Cinemas/Delete?id=@item.Id'">Delete</button>
+                </td>
+            </tr>
+        }
+
+    </table>
+    <!-- Pagination links -->
+    <div class="pagination-container">
+        <div class="pagination">
+            <ul>
+                <li class="previous @(currentPage == 1 ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage - 1, searchString = searchString })">Prev</a></li>
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="@(i == currentPage ? "active" : "")"><a href="@Url.Action("Index", new { pageNumber = i, searchString = searchString })">@i</a></li>
+                }
+                <li class="next @(currentPage == totalPages ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage + 1, searchString = searchString })">Next</a></li>
+            </ul>
+        </div>
+        <div class="pagination-info">
+<p>Total Items: @Model.Count()</p>
+            <form method="get" action="@Url.Action("Index")">
+                <input type="hidden" name="searchString" value="@searchString" />
+                <input type="number" name="pageNumber" min="1" max="@totalPages" value="@currentPage" />
+                <input type="submit" value="Go" />
+            </form>
+        </div>
+    </div>

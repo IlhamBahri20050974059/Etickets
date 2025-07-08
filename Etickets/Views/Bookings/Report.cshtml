@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Report Booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Booking Report</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <label class="col-md-4 control-label">Periode</label>
+        <div class="input-group">
+            @Html.Editor("periodstart", new { htmlAttributes = new { @class = "form-control datepicker_from datemask2", @type = "date" } })<span class="input-group-addon"><i class="fa fa-calendar"></i></span><span class="input-group-addon no-border">-</span>@Html.Editor("periodend", new { htmlAttributes = new { @class = "form-control datepicker_to datemask2", @type = "date" } })
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="button" id="btnViewReport" class="btn btn-primary btn-md" onclick="ShowReport('')"><b>View Report</b></button>
+        <button type="button" id="btnExportPDF" class="btn btn-danger btn-md" onclick="ShowReport('PDF')"><b>Export to PDF</b></button>
+        <button type="button" id="btnExportExcel" class="btn btn-success btn-md" onclick="ShowReport('XLS')"><b>Export to Excel</b></button>
+        <a href="@Url.Action("Report")" type="button" class="btn btn-default btn-md"><b>Clear</b></a>
+
+
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <iframe id="ReportFrame" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+
+    $(document).ready(function () {
+
+    })
+
+    function GetFilterData() {
+        var data = {
+            //ddltype: $('#ddltype option:selected').val(),
+            //ddltrntype: $('#ddltrntype option:selected').val(),
+            //ddlitemtype: $('#ddlitemtype option:selected').val(),
+            //ddlcat1: $('#ddlcat1 option:selected').val(),
+            //ddlcat2: $('#ddlcat2 option:selected').val(),
+            //ddlstatus: $('#ddlstatus option:selected').val(),
+            periodstart: $('#periodstart').val(),
+            periodend: $('#periodend').val(),
+            //filteremp: $('#filteremp').val(),
+            //filterpo: $('#filterpo').val(),
+            //filtermat: $('#filtermat').val(),
+            //filterTxtqty: $('#filterTxtqty').val(),
+            //filterqty: $('#filterqty option:selected').val(),
+            //filterTxtqty2: $('#filterTxtqty2').val(),
+            //filterqty2: $('#filterqty2 option:selected').val()
+        };
+        //console.log(data);
+        return data;
+    }
+
+
+    function ShowReport(reporttype) {
+        var param = GetFilterData();
+        //console.log(param);
+        $.ajax({
+            url: "@(Url.Action("ShowReport"))",
+            data: { param: param, reporttype: reporttype },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                $('#ReportFrame').attr("src", "@Url.Content("~/Report/ReportBooking.aspx")" + "?report=" + data.rpt_id + "&rptname=" + data.rptname + "&rpttype=" + reporttype + "");
+                //if (reporttype == '')
+                   // pleaseWaitDialog.show();
+            },
+            error: function (err) {
+                swal('', err.responseText, 'error');
+            }
+        });
+    }
+    $('#ReportFrame').on('load', function () {
+        var reportHeight = $("#ReportFrame").contents().find('#CRViewer').height();
+        $('#ReportFrame').css('height', (reportHeight + 50) + 'px');
+        //pleaseWaitDialog.hide();
+    });
+</script>
+

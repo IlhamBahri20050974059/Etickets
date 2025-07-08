@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Pay";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<br /><br /><br /><br />
+    <button id="pay-button">Bayar Sekarang</button>
+
+
+    <!-- import the snap.js provided by Midtrans -->
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-QZun0ob3_0XTeuc9"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+        // Mendapatkan tombol pembayaran
+        const payButton = $('#pay-button');
+
+        // Hapus semua event listener sebelumnya
+        payButton.off('click');
+
+        // Menambahkan event listener pada tombol pembayaran
+        payButton.click(function () {
+            // Menentukan total pembayaran
+            const totalPrice = 100000;
+
+            $.ajax({
+                url: 'https://app.sandbox.midtrans.com/snap/v1/transactions',
+                type: 'POST',
+                crossDomain: true,
+                async: true,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    authorization: 'Basic U0ItTWlkLXNlcnZlci12X050dEFuM0lhLXlOdTdMRWw0dmlKai06',
+                    "Access-Control-Allow-Origin":'*'
+                },
+                data: JSON.stringify({
+                    transaction_details: {
+                        order_id: 'ORDER-ID-' + Math.round(new Date().getTime() / 1000),
+                        gross_amount: totalPrice
+                    }
+                }),
+                success: function (data) {
+                    const token = data.token;
+                    console.log(token);
+                    // Memanggil SNAP JS dengan token pembayaran
+                    snap.pay(token, {
+                        onSuccess: function (result) {
+                            console.log('Pembayaran berhasil: ' + JSON.stringify(result));
+                        },
+                        onPending: function (result) {
+                            console.log('Pembayaran tertunda: ' + JSON.stringify(result));
+                        },
+                        onError: function (result) {
+                            console.log('Pembayaran gagal: ' + JSON.stringify(result));
+                        }
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('Error:', textStatus, errorThrown);
+                }
+            });
+        });
+
+
+
+
+    </script>
+</body>
+</html>

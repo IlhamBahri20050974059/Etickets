@@ -1,0 +1,93 @@
+﻿@model Etickets.Models.Booking
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            Movie
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingMovie.movie.Name)
+        </dd>
+
+        <dt>
+            Booking Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingDate)
+        </dd>
+
+        <dt>
+            Film Time
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingMovie.Time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BookingMovie.Room)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingMovie.Room)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seat)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seat)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BookingMovie.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookingMovie.Price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            Rating
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+
+        <dt>
+            Review
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Review)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <button class="button-ticket" onclick="location.href='Ticket?id=@Model.Id'">Print Ticket</button>
+    <button class="button-review" onclick="location.href='RatingReview?id=@Model.Id'">Rating & Review</button>
+    @Html.ActionLink("Back to List", "Index")
+</p>

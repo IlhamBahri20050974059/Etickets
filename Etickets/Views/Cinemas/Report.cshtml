@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Report Cinema";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Report Cinema</h2>
+
+<div class="text-center">
+    <button type="button" id="btnViewReport" class="btn btn-primary btn-md" onclick="ShowReport('')"><b>View Report</b></button>
+    <button type="button" id="btnExportPDF" class="btn btn-danger btn-md" onclick="ShowReport('PDF')"><b>Export to PDF</b></button>
+    <button type="button" id="btnExportExcel" class="btn btn-success btn-md" onclick="ShowReport('XLS')"><b>Export to Excel</b></button>
+    <a href="@Url.Action("Report")" type="button" class="btn btn-default btn-md"><b>Clear</b></a>
+
+    <div class="row">
+        <div class="col-md-12">
+            <iframe id="ReportFrame" src="" style="border: none; width: 100%; height: 100%;"></iframe>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script language="javascript" type="text/javascript">
+
+
+    $(document).ready(function () {
+
+    })
+
+    function ShowReport(reporttype) {
+        //var param = GetFilterData();
+        $.ajax({
+            url: "@(Url.Action("ShowReport"))",
+            data: { reporttype: reporttype },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                $('#ReportFrame').attr("src", "@Url.Content("~/Report/ReportCinema.aspx")" + "?report=" + data.rpt_id + "&rptname=" + data.rptname + "&rpttype=" + reporttype + "");
+                //if (reporttype == '')
+                   // pleaseWaitDialog.show();
+            },
+            error: function (err) {
+                swal('', err.responseText, 'error');
+            }
+        });
+    }
+    $('#ReportFrame').on('load', function () {
+        var reportHeight = $("#ReportFrame").contents().find('#CRViewer').height();
+        $('#ReportFrame').css('height', (reportHeight + 50) + 'px');
+        //pleaseWaitDialog.hide();
+    });
+</script>

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Etickets.Models.Booking>
+@{
+    ViewBag.Title = "RatingReview";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Reviews</h2>
+
+@if (!Model.Any())
+{
+    <p>There are no reviews yet.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Rating</th>
+                <th>Review</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdUser</td>
+                    <td>@item.Rating</td>
+                    <td>@item.Review</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div>
+    @Html.ActionLink("Back to Movie", "Details", "Movie", new { id = ViewBag.MovieId }, new { @class = "btn btn-primary" })
+</div>

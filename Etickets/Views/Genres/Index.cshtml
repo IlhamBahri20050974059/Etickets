@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Etickets.Models.Genre>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int totalPages = (int)Math.Ceiling((decimal)Model.Count() / 10);
+    int currentPage = ViewBag.PageNumber ?? 1;
+    string searchString = ViewBag.SearchString ?? "";
+
+
+}
+
+<h2>Genre</h2>
+
+<button class="button-create" onclick="location.href='Genres/Create'">Create</button>
+
+@using (Html.BeginForm("Index", "Genres", FormMethod.Post))
+{
+    <div class="form-group">
+        <input type="text" name="searchString" class="form-control search-input" placeholder="Search...">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+}
+
+<table class="table"  border="1">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            <button class="button-edit" onclick="location.href='Genres/Edit?id=@item.Id'">Edit</button>
+            <button class="button-details" onclick="location.href='Genres/Details?id=@item.Id'">Details</button>
+            <button class="button-delete" onclick="location.href='Genres/Delete?id=@item.Id'">Delete</button>
+        </td>
+    </tr>
+}
+
+</table>
+
+<div class="pagination-container">
+    <div class="pagination">
+        <ul>
+            <li class="previous @(currentPage == 1 ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage - 1, searchString = searchString })">Prev</a></li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="@(i == currentPage ? "active" : "")"><a href="@Url.Action("Index", new { pageNumber = i, searchString = searchString })">@i</a></li>
+            }
+            <li class="next @(currentPage == totalPages ? "disabled" : "")"><a href="@Url.Action("Index", new { pageNumber = currentPage + 1, searchString = searchString })">Next</a></li>
+        </ul>
+    </div>
+    <div class="pagination-info">
+        <p>Total Items: @Model.Count()</p>
+        <form method="get" action="@Url.Action("Index")">
+            <input type="hidden" name="searchString" value="@searchString" />
+            <input type="number" name="pageNumber" min="1" max="@totalPages" value="@currentPage" />
+            <input type="submit" value="Go" />
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,60 @@
+﻿@model Etickets.Models.Producer
+
+@{
+    ViewBag.Title = "Producer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <div>
+        <h4>Producer</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Profile Picture
+            </dt>
+
+            <dd>
+                <img src="@Url.Content(Model.ProfilePictureURL??"/")" width="50" />
+            </dd>
+             
+            <dt>
+               Full Name
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.FullName)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Bio)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Bio)
+            </dd>
+    
+            <dt>
+                Movies
+            </dt>
+
+            <dd>
+                <ul>
+                    @*@if (Model.movies != null)
+                    {
+                        foreach (var movie in Model.movies)
+                        {
+                            <li>@movie.Name</li>
+                        }
+                    }
+                    else
+                    {
+                        <li>No movies found.</li>
+                    }*@
+                </ul>
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Etickets.Models.Actor>
+
+@{
+    ViewBag.Title = "Actor";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+    <h2>ACTOR</h2>
+
+    <form class="form-inline my-2 my-lg-0" action="@Url.Action("Index", "Actor")" method="get">
+        <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search Actor" value="@ViewBag.Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <a href="@Url.Action("Details", new { id = item.Id })">
+                        <img src="@Url.Content(item.ProfilePictureURL ?? "/")" class="card-img-top img-fluid" alt="Movie Image">
+                    </a>
+                    <div class="card-body">
+                        <h6 class="card-title">@Html.DisplayFor(modelItem => item.FullName)</h6>
+                        <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            @{
+                int totalPage = (int)Math.Ceiling((double)Model.Count() / 3);
+                int currentPage = ViewBag.Page ?? 1;
+                int startPage = Math.Max(currentPage - 2, 1);
+                int endPage = Math.Min(currentPage + 2, totalPage);
+            }
+            @if (currentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Actor", new { page = currentPage - 1 })">Previous</a>
+                </li>
+            }
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", "Actor", new { page = i })">@i</a>
+                </li>
+            }
+            @if (currentPage < totalPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", "Actor", new { page = currentPage + 1 })">Next</a>
+                </li>
+            }
+        </ul>
+    </nav>
+

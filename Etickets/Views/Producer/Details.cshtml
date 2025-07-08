@@ -1,0 +1,57 @@
+﻿@model Etickets.Models.Producer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Producer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Profile Picture
+        </dt>
+
+        <dd>
+            <img src="@Url.Content(Model.ProfilePictureURL??"/")" alt="Image" width="50" />
+        </dd>
+
+        <dt>
+            Full Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bio)
+        </dd>
+
+        <dt>
+            Movies
+        </dt>
+
+        <dd>
+            @foreach (var movieProducer in Model.MovieProducers)
+            {
+                if (movieProducer.IdProducer == Model.Id)
+                {
+                    var movie = movieProducer.movie;
+                    @movie.Name
+                    <br />
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

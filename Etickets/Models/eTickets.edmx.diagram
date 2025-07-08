@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d1b31cc552d740edb6e1ba392f784e18" Name="Diagram1" ZoomLevel="59">
+        <EntityTypeShape EntityType="eTicketsModel.Actor" Width="1.5" PointX="9.5" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="eTicketsModel.Cinema" Width="1.5" PointX="9.375" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="eTicketsModel.Producer" Width="1.5" PointX="0.625" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="eTicketsModel.User" Width="1.5" PointX="9.25" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="eTicketsModel.Genre" Width="1.5" PointX="0.5" PointY="4.75" />
+        <EntityTypeShape EntityType="eTicketsModel.MovieActor" Width="1.5" PointX="7" PointY="4.375" />
+        <EntityTypeShape EntityType="eTicketsModel.MovieCinema" Width="1.5" PointX="6.875" PointY="6.75" />
+        <EntityTypeShape EntityType="eTicketsModel.MovieGenre" Width="1.5" PointX="2.625" PointY="4.75" />
+        <EntityTypeShape EntityType="eTicketsModel.MovieProducer" Width="1.5" PointX="2.625" PointY="7" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieActor_Actor" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieCinema_Cinema" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieGenre_Genre" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieProducer_Producer" />
+        <EntityTypeShape EntityType="eTicketsModel.BookingMovie" Width="1.5" PointX="4.625" PointY="2.625" />
+        <EntityTypeShape EntityType="eTicketsModel.Booking" Width="1.5" PointX="7.125" PointY="1.125" />
+        <EntityTypeShape EntityType="eTicketsModel.movie" Width="1.5" PointX="4.75" PointY="5.25" />
+        <AssociationConnector Association="eTicketsModel.FK_Booking_BookingMovie" />
+        <AssociationConnector Association="eTicketsModel.FK_Booking_user" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieActor_movie" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieCinema_movie" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieGenre_movie" />
+        <AssociationConnector Association="eTicketsModel.FK_MovieProducer_movie" />
+        <AssociationConnector Association="eTicketsModel.FK_BookingMovie_movie" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

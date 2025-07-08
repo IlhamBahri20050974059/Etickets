@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="eTicketsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Actor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProfilePictureURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Bio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MovieActors" Relationship="eTicketsModel.FK_MovieActor_Actor" FromRole="Actor" ToRole="MovieActor" />
+  </EntityType>
+  <EntityType Name="Booking">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdUser" Type="Int32" Nullable="false" />
+    <Property Name="IdMovie" Type="Int32" Nullable="false" />
+    <Property Name="BookingDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FilmDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Tickets" Type="Int32" Nullable="false" />
+    <Property Name="TotalPrice" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="movie" Relationship="Self.FK_Booking_movie" FromRole="Booking" ToRole="movie" />
+    <NavigationProperty Name="User" Relationship="Self.FK_Booking_user" FromRole="Booking" ToRole="User" />
+    <Property Name="Review" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Rating" Type="Int32" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Cinema">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Logo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MovieCinemas" Relationship="eTicketsModel.FK_MovieCinema_Cinema" FromRole="Cinema" ToRole="MovieCinema" />
+  </EntityType>
+  <EntityType Name="movie">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="ImageURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TicketsQuota" Type="Int32" Nullable="false" />
+    <Property Name="TicketsBooked" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_movie" FromRole="movie" ToRole="Booking" />
+    <NavigationProperty Name="MovieActors" Relationship="eTicketsModel.FK_MovieActor_movie" FromRole="movie" ToRole="MovieActor" />
+    <NavigationProperty Name="MovieCinemas" Relationship="eTicketsModel.FK_MovieCinema_movie" FromRole="movie" ToRole="MovieCinema" />
+    <NavigationProperty Name="MovieGenres" Relationship="eTicketsModel.FK_MovieGenre_movie" FromRole="movie" ToRole="MovieGenre" />
+    <NavigationProperty Name="MovieProducers" Relationship="eTicketsModel.FK_MovieProducer_movie" FromRole="movie" ToRole="MovieProducer" />
+  </EntityType>
+  <EntityType Name="Producer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProfilePictureURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Bio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MovieProducers" Relationship="eTicketsModel.FK_MovieProducer_Producer" FromRole="Producer" ToRole="MovieProducer" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProfilePictureURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Bookings" Relationship="Self.FK_Booking_user" FromRole="User" ToRole="Booking" />
+  </EntityType>
+  <Association Name="FK_Booking_movie">
+    <End Role="movie" Type="Self.movie" Multiplicity="1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="IdMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Booking_user">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="IdUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="eTicketsEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Actors" EntityType="Self.Actor" />
+    <EntitySet Name="Bookings" EntityType="Self.Booking" />
+    <EntitySet Name="Cinemas" EntityType="Self.Cinema" />
+    <EntitySet Name="movies" EntityType="Self.movie" />
+    <EntitySet Name="Producers" EntityType="Self.Producer" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Booking_movie" Association="Self.FK_Booking_movie">
+      <End Role="movie" EntitySet="movies" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Booking_user" Association="Self.FK_Booking_user">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Booking" EntitySet="Bookings" />
+    </AssociationSet>
+    <EntitySet Name="Genres" EntityType="eTicketsModel.Genre" />
+    <EntitySet Name="MovieActors" EntityType="eTicketsModel.MovieActor" />
+    <EntitySet Name="MovieCinemas" EntityType="eTicketsModel.MovieCinema" />
+    <EntitySet Name="MovieGenres" EntityType="eTicketsModel.MovieGenre" />
+    <EntitySet Name="MovieProducers" EntityType="eTicketsModel.MovieProducer" />
+    <AssociationSet Name="FK_MovieActor_Actor" Association="eTicketsModel.FK_MovieActor_Actor">
+      <End Role="Actor" EntitySet="Actors" />
+      <End Role="MovieActor" EntitySet="MovieActors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieCinema_Cinema" Association="eTicketsModel.FK_MovieCinema_Cinema">
+      <End Role="Cinema" EntitySet="Cinemas" />
+      <End Role="MovieCinema" EntitySet="MovieCinemas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieGenre_Genre" Association="eTicketsModel.FK_MovieGenre_Genre">
+      <End Role="Genre" EntitySet="Genres" />
+      <End Role="MovieGenre" EntitySet="MovieGenres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieActor_movie" Association="eTicketsModel.FK_MovieActor_movie">
+      <End Role="movie" EntitySet="movies" />
+      <End Role="MovieActor" EntitySet="MovieActors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieCinema_movie" Association="eTicketsModel.FK_MovieCinema_movie">
+      <End Role="movie" EntitySet="movies" />
+      <End Role="MovieCinema" EntitySet="MovieCinemas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieGenre_movie" Association="eTicketsModel.FK_MovieGenre_movie">
+      <End Role="movie" EntitySet="movies" />
+      <End Role="MovieGenre" EntitySet="MovieGenres" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieProducer_movie" Association="eTicketsModel.FK_MovieProducer_movie">
+      <End Role="movie" EntitySet="movies" />
+      <End Role="MovieProducer" EntitySet="MovieProducers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MovieProducer_Producer" Association="eTicketsModel.FK_MovieProducer_Producer">
+      <End Role="Producer" EntitySet="Producers" />
+      <End Role="MovieProducer" EntitySet="MovieProducers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Genre">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="MovieGenres" Relationship="eTicketsModel.FK_MovieGenre_Genre" FromRole="Genre" ToRole="MovieGenre" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="MovieActor">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdMovie" Type="Int32" Nullable="false" />
+    <Property Name="IdActor" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Actor" Relationship="eTicketsModel.FK_MovieActor_Actor" FromRole="MovieActor" ToRole="Actor" />
+    <NavigationProperty Name="movie" Relationship="eTicketsModel.FK_MovieActor_movie" FromRole="MovieActor" ToRole="movie" />
+  </EntityType>
+  <EntityType Name="MovieCinema">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdMovie" Type="Int32" Nullable="false" />
+    <Property Name="IdCinema" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Cinema" Relationship="eTicketsModel.FK_MovieCinema_Cinema" FromRole="MovieCinema" ToRole="Cinema" />
+    <NavigationProperty Name="movie" Relationship="eTicketsModel.FK_MovieCinema_movie" FromRole="MovieCinema" ToRole="movie" />
+  </EntityType>
+  <EntityType Name="MovieGenre">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdMovie" Type="Int32" Nullable="false" />
+    <Property Name="IdGenre" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Genre" Relationship="eTicketsModel.FK_MovieGenre_Genre" FromRole="MovieGenre" ToRole="Genre" />
+    <NavigationProperty Name="movie" Relationship="eTicketsModel.FK_MovieGenre_movie" FromRole="MovieGenre" ToRole="movie" />
+  </EntityType>
+  <EntityType Name="MovieProducer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdMovie" Type="Int32" Nullable="false" />
+    <Property Name="IdProducer" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="movie" Relationship="eTicketsModel.FK_MovieProducer_movie" FromRole="MovieProducer" ToRole="movie" />
+    <NavigationProperty Name="Producer" Relationship="eTicketsModel.FK_MovieProducer_Producer" FromRole="MovieProducer" ToRole="Producer" />
+  </EntityType>
+  <Association Name="FK_MovieActor_Actor">
+    <End Type="eTicketsModel.Actor" Role="Actor" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieActor" Role="MovieActor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieActor">
+        <PropertyRef Name="IdActor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieCinema_Cinema">
+    <End Type="eTicketsModel.Cinema" Role="Cinema" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieCinema" Role="MovieCinema" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cinema">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieCinema">
+        <PropertyRef Name="IdCinema" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieGenre_Genre">
+    <End Type="eTicketsModel.Genre" Role="Genre" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieGenre" Role="MovieGenre" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Genre">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieGenre">
+        <PropertyRef Name="IdGenre" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieActor_movie">
+    <End Type="eTicketsModel.movie" Role="movie" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieActor" Role="MovieActor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieActor">
+        <PropertyRef Name="IdMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieCinema_movie">
+    <End Type="eTicketsModel.movie" Role="movie" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieCinema" Role="MovieCinema" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieCinema">
+        <PropertyRef Name="IdMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieGenre_movie">
+    <End Type="eTicketsModel.movie" Role="movie" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieGenre" Role="MovieGenre" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieGenre">
+        <PropertyRef Name="IdMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieProducer_movie">
+    <End Type="eTicketsModel.movie" Role="movie" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieProducer" Role="MovieProducer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieProducer">
+        <PropertyRef Name="IdMovie" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MovieProducer_Producer">
+    <End Type="eTicketsModel.Producer" Role="Producer" Multiplicity="1" />
+    <End Type="eTicketsModel.MovieProducer" Role="MovieProducer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Producer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="MovieProducer">
+        <PropertyRef Name="IdProducer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
